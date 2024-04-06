@@ -1,9 +1,6 @@
-# Ex.No: 6               HOLT WINTERS METHOD
-### Date: 
-
-
-
+# Ex.No: 6 HOLT WINTERS METHOD
 ### AIM:
+To create and implement Holt Winter's Method Model using python.
 
 ### ALGORITHM:
 1. You import the necessary libraries
@@ -19,14 +16,61 @@ Winters model to the entire dataset and make future predictions
 9. You plot the original sales data and the predictions
 ### PROGRAM:
 
+```
+NAME: LOKESH R
+REG NO : 212222240055
+```
+
+```
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error,mean_squared_error
+import pandas as pd
+
+airline  = pd.read_csv('AirPassengers.csv',index_col='Month',parse_dates=True)
+airline.plot()
+airline.freq = 'MS'
+airline.index
+len(airline)
+
+train_airline = airline[:108] 
+test_airline = airline[108:] 
+fitted_model = ExponentialSmoothing(train_airline['#Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+test_predictions = fitted_model.forecast(36).rename('HW Test Forecast')
+
+test_predictions[:10]
+train_airline['#Passengers'].plot(legend=True,label='TRAIN')
+test_airline['#Passengers'].plot(legend=True,label='TEST',figsize=(12,8))
+plt.title('Train and Test Data');
+
+train_airline['#Passengers'].plot(legend=True,label='TRAIN')
+test_airline['#Passengers'].plot(legend=True,label='TEST',figsize=(12,8))
+test_predictions.plot(legend=True,label='PREDICTION')
+plt.title('Train, Test and Predicted Test using Holt Winters');
+print("Mean Absolute Error = ",mean_absolute_error(test_airline,test_predictions))
+
+final_model = ExponentialSmoothing(airline['#Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+forecast_predictions = final_model.forecast(steps=36)
+
+airline['#Passengers'].plot(figsize=(12,8),legend=True,label='Current Airline Passengers')
+forecast_predictions.plot(legend=True,label='Forecasted Airline Passengers')
+plt.title('Airline Passenger Forecast');
+
+```
+
 ### OUTPUT:
 
 
-TEST_PREDICTION
+TEST_PREDICTION:
+
+![318178663-d48de689-e451-456e-8e71-88e9cdf89bf0](https://github.com/LokeshRajamani/TSA_EXP6/assets/120544804/18152fab-7a86-4066-9023-3745837976a1)
 
 
 
-FINAL_PREDICTION
+FINAL_PREDICTION:
+
+![318178672-1d262dc3-b524-4761-8670-6eda0610ddad](https://github.com/LokeshRajamani/TSA_EXP6/assets/120544804/868a4df3-3ef9-4aa9-8018-b44c8516c9c8)
+
 
 ### RESULT:
 Thus the program run successfully based on the Holt Winters Method model.
